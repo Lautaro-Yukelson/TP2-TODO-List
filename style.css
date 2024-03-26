@@ -57,3 +57,37 @@ body{
     font-weight: 500;
     margin-bottom: 0;
 }
+
+.imagenes{
+    width: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-ico{
+    background: none;
+    border: none;
+}
+
+.tachado{
+    text-decoration: line-through;
+}
+
+.info{
+    height: 25px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+
+    transition: .2s ease-in-out;
+}
+
+.item:hover .info {
+    height: 45px;
+}
+
+.fecha{
+    opacity: .6;
+    margin-left: 15px;
+}
