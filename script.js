@@ -3,6 +3,7 @@ var tareas = [
         id: 1,
         titulo: "Tarea Matemática",
         fechaCreacion: `26-3-2024`,
+        checked: false,
         tachado: false,
     },
     {
