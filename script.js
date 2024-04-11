@@ -1,23 +1,10 @@
-var tareas = [
-    {
-        id: 1,
-        titulo: "Tarea Matemática",
-        fechaCreacion: `26-3-2024`,
-        checked: false,
-        tachado: false,
-    },
-    {
-        id: 2,
-        titulo: "Tarea lengua",
-        fechaCreacion: `25-3-2024`,
-        tachado: false,
-        checked: false,
-    },
-];
+var tareas = [];
 
 function cargarTareas() {
     const items = document.getElementById("items");
     items.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+
     tareas.forEach((tarea) => {
         const nuevaTarea = document.createElement("div");
         nuevaTarea.className = "input-group mb-3 item";
@@ -40,72 +27,77 @@ function cargarTareas() {
                     <button class="btn-ico"><img src="trash.png" width="18" onclick="eliminarTarea(${tarea.id})"></button>
                 </div>
             </div>`;
-        items.appendChild(nuevaTarea);
+        fragment.appendChild(nuevaTarea);
     });
+
+    items.appendChild(fragment);
 }
+
 function handleChange(id) {
-    const text = document.getElementById(id);
     const tarea = tareas.find(t => t.id === id);
     if (tarea) {
         tarea.tachado = !tarea.tachado;
+        const text = document.getElementById(id);
         text.style.textDecoration = tarea.tachado ? "line-through" : "";
 
         const checkbox = document.querySelector(`input[name="${id}"]`);
         tarea.checked = checkbox.checked;
 
-        localStorage.setItem("tareas", JSON.stringify(tareas));
+        actualizarTareasLocalStorage();
     }
 }
-
 
 function agregarTarea() {
     const input = document.getElementById("nTarea-titulo");
 
     const date = new Date();
-    let dia = date.getDate();
-    let mes = date.getMonth() + 1;
-    let ano = date.getFullYear();
-    let fechaHoy = `${dia}-${mes}-${ano}`;
-    nuevaTarea = {
-        id: tareas[tareas.length - 1].id + 1,
+    const dia = date.getDate();
+    const mes = date.getMonth() + 1;
+    const ano = date.getFullYear();
+    const fechaHoy = `${dia}-${mes}-${ano}`;
+    
+    const nuevaTarea = {
+        id: tareas.length > 0 ? tareas[tareas.length - 1].id + 1 : 1,
         titulo: input.value,
-        fechaCreacion: fechaHoy
-    }
+        fechaCreacion: fechaHoy,
+        checked: false,
+        tachado: false
+    };
+
     tareas.push(nuevaTarea);
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+    actualizarTareasLocalStorage();
     cargarTareas();
 }
 
 function eliminarTarea(id) {
     tareas = tareas.filter(tarea => tarea.id != id);
-    localStorage.setItem("tareas", JSON.stringify(tareas));
+    actualizarTareasLocalStorage();
     cargarTareas();
 }
 
 function modalEditar(id){
-    tareas.forEach((tarea) => {
-        if (tarea.id == id){
-            document.getElementById("editarTarea").value = tarea.titulo;
-            document.getElementById("idTarea").value = tarea.id;
-        }
-    });
+    const tarea = tareas.find(t => t.id == id);
+    if (tarea){
+        document.getElementById("editarTarea").value = tarea.titulo;
+        document.getElementById("idTarea").value = tarea.id;
+    }
 }
 
 function editarTarea() {
     const idTarea = document.getElementById("idTarea").value;
     const tituloTarea = document.getElementById("editarTarea").value;
 
-    tareas.forEach((tarea) => {
-        if (tarea.id == idTarea){
-            tarea.titulo = tituloTarea;
-        }
-    });
-
-    localStorage.setItem("tareas", JSON.stringify(tareas));
-    cargarTareas();
+    const tarea = tareas.find(t => t.id == idTarea);
+    if (tarea){
+        tarea.titulo = tituloTarea;
+        actualizarTareasLocalStorage();
+        cargarTareas();
+    }
 }
 
-
+function actualizarTareasLocalStorage() {
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const storedTareas = localStorage.getItem("tareas");
