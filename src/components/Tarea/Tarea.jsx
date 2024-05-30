@@ -1,40 +1,30 @@
-import "./Tarea.css";
+import './Tarea.css';
 
-function Tarea({ tarea, handleChange, eliminarTarea, modalEditar }) {
+function Tarea({ tarea, handleChange, eliminarTarea }) {
   return (
     <>
-      <div class="input-group-text">
+      <div className="titulo-tarea" id={tarea.id}>
         <input
-          class="form-check-input mt-0"
+          className="form-check-input mt-0"
           type="checkbox"
           name={tarea.id}
-          onClick={handleChange(tarea.id)}
+          onClick={() => handleChange(tarea.id)}
         />
-      </div>
-      <div class="titulo-tarea" id={tarea.id}>
-        <div class="info">
-          <p class={tarea.tachado ? "tachado" : ""}>{tarea.titulo}</p>
-          <p class="fecha">Creación: {tarea.fechaCreacion}</p>
-        </div>
-        <div class="imagenes">
-          <button class="btn-ico">
-            <img
-              alt="edit ico"
-              src="edit.png"
-              width="18"
-              data-bs-toggle="modal"
-              data-bs-target="#editarTareaModal"
-              onClick={() => modalEditar(tarea.id)}
-            />
-          </button>
-          <button class="btn-ico">
-            <img
-              alt="trash ico"
-              src="trash.png"
-              width="18"
-              onClick={() => eliminarTarea(tarea.id)}
-            />
-          </button>
+        <div className="contenedor-tarea-temporal">
+          <div className="info">
+            <p className={tarea.tachado ? 'tachado' : ''}>{tarea.titulo}</p>
+            <p className="fecha">Creación: {tarea.fechaCreacion}</p>
+          </div>
+          <div className="imagenes">
+            <button className="btn-ico">
+              <img
+                alt="trash ico"
+                src="/trash.png"
+                width="18"
+                onClick={() => eliminarTarea(tarea.id)}
+              />
+            </button>
+          </div>
         </div>
       </div>
     </>

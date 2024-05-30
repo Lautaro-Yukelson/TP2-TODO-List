@@ -1,13 +1,13 @@
-import { useState } from "react";
-import TODOList from "./components/TODOList/TODOList";
-import Modal from "./components/Modal/Modal";
-import "./App.css";
+import { useState } from 'react';
+import TODOList from './components/TODOList/TODOList';
+import Modal from './components/Modal/Modal';
+import './App.css';
 
 function App() {
   const [tareas, setTareas] = useState([]);
 
   function agregarTarea() {
-    const input = document.getElementById("nTarea-titulo");
+    const input = document.getElementById('nTarea-titulo');
     const date = new Date();
     const dia = date.getDate();
     const mes = date.getMonth() + 1;
@@ -29,8 +29,8 @@ function App() {
   }
 
   function editarTarea() {
-    const idTarea = parseInt(document.getElementById("idTarea").value);
-    const tituloTarea = document.getElementById("editarTarea").value;
+    const idTarea = parseInt(document.getElementById('idTarea').value);
+    const tituloTarea = document.getElementById('editarTarea').value;
 
     const copia = [...tareas];
 
@@ -49,11 +49,13 @@ function App() {
         tarea.tachado = !tarea.tachado;
         const text = document.getElementById(id);
         if (text) {
-          text.style.textDecoration = tarea.tachado ? "line-through" : "";
+          text.style.textDecoration = tarea.tachado ? 'line-through' : '';
         }
 
         const checkbox = document.querySelector(`input[name="${id}"]`);
-        tarea.checked = checkbox.checked;
+        if (checkbox) {
+          tarea.checked = checkbox.checked;
+        }
       }
     });
     setTareas(copia);
@@ -64,21 +66,12 @@ function App() {
     setTareas(copia);
   }
 
-  function modalEditar(id) {
-    const tarea = tareas.find((t) => t.id === id);
-    if (tarea) {
-      document.getElementById("editarTarea").value = tarea.titulo;
-      document.getElementById("idTarea").value = tarea.id;
-    }
-  }
-
   return (
     <>
       <TODOList
         tareas={tareas}
         handleChange={handleChange}
         eliminarTarea={eliminarTarea}
-        modalEditar={modalEditar}
       />
       <Modal
         textoTitulo="Agregar Tarea"

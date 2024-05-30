@@ -1,4 +1,6 @@
-import "./Modal.css";
+import './Modal.css';
+import { useEffect } from 'react';
+
 function Modal({
   textoTitulo,
   id,
@@ -7,6 +9,14 @@ function Modal({
   funcionOnClick,
   textoConfirmar,
 }) {
+  useEffect(() => {
+    const modal = document.getElementById(id);
+    modal.addEventListener('show.bs.modal', function (event) {
+      const button = event.relatedTarget;
+      const tareaId = button.getAttribute('data-tarea-id');
+      document.getElementById(idInput).value = tareaId; // Puedes establecer otro valor si necesitas
+    });
+  }, [id, idInput]);
   return (
     <div
       className="modal fade"
